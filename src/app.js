@@ -11,7 +11,7 @@ createApp({
           email: 'adriana@fatec.com',
           ativo: true,
         },
-        // Adicione mais alunos aqui, se necessário
+       
       ],
       form: {
         nome: '',
@@ -66,6 +66,8 @@ createApp({
     resetForm() {
       this.form = { nome: '', cpf: '', ra: '', email: '' };
     },
+
+    //ACESSIBILIDADE
     toggleAccessibilityMenu() {
       this.accessibilityMenuVisible = !this.accessibilityMenuVisible;
     },
