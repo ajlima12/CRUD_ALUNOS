@@ -18,7 +18,7 @@ h2 {
 }
 
 .table thead th {
-  background-color: #007bff; /* Cor de fundo do cabeçalho da tabela - azul */
+  background-color: #6db8ff; /* Cor de fundo do cabeçalho da tabela - azul */
   color: #ffffff; /* Cor do texto do cabeçalho da tabela */
 }
 
@@ -80,3 +80,45 @@ h2 {
   font-size: 1.2em;
   color: #6db8ff; /* Cor do texto do modal de sucesso */
 }
+
+/* Estilo do botão de acessibilidade */
+.accessibility-btn {
+  background-color: #007bff;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-right: 20px; /* Distância do lado direito da navbar */
+}
+
+.accessibility-btn img {
+  width: 40px;
+  height: 40px;
+}
+
+.accessibility-btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.accessibility-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5);
+}
+
+/* Menu de Acessibilidade */
+.accessibility-menu {
+  position: absolute;
+  right: 10px; /* Distância do lado direito */
+  top: 60px; /* Distância do topo da navbar */
+  background-color: white; /* Fundo do menu */
+  border: 1px solid #ccc; /* Borda do menu */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 10px; /* Espaçamento interno do menu */
+  z-index: 1000; /* Para sobrepor outros elementos */
+}
+
+.accessibility-menu button {
+  margin-bottom: 5px; /* Espaçamento entre os botões */
+}
+

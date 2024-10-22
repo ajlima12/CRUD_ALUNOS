@@ -1,33 +1,50 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRUD Alunos</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3.2.31"></script>
-</head>
-<body>
-  <div id="app">
-    <!-- Navbar -->
-    <nav class="navbar" style="background-color: #6db8ff;">
-      <div class="container">
-        <h1 class="text-center w-100">Conta dos Alunos</h1>
-      </div>
-    </nav>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crud Alunos</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <script src="https://unpkg.com/vue@3.2.31"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Navbar -->
+      <nav
+        class="navbar d-flex justify-content-between"
+        style="background-color: #6db8ff"
+      >
+        <div class="container">
+          <h2 class="text-center w-100">Conta dos Alunos</h2>
+        </div>
+        <!-- Botão de Acessibilidade dentro da Navbar -->
+        <button class="accessibility-btn" aria-label="Acessibilidade" @click="toggleAccessibilityMenu">
+          <img
+            src="src/assets/acessibilidade.png"
+            alt="Ícone de acessibilidade"
+          />
+        </button>
+        <!-- Menu de Acessibilidade -->
+        <div v-if="accessibilityMenuVisible" class="accessibility-menu">
+          <button @click="toggleContrast" class="btn btn-light">Contraste</button>
+          <button @click="increaseFontSize" class="btn btn-light">Aumentar Fonte</button>
+        </div>
+      </nav>
 
-    <main class="container mt-5">
-      <section aria-labelledby="studentTableHeading">
-        <h2 id="studentTableHeading" class="visually-hidden">Tabela de Alunos</h2>
+      <div class="container mt-5">
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
-              <th scope="col">Nome</th>
-              <th scope="col">CPF</th>
-              <th scope="col">RA</th>
-              <th scope="col">Email</th>
-              <th scope="col">Status</th>
-              <th scope="col">Ação</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>RA</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Ação</th>
             </tr>
           </thead>
           <tbody>
@@ -38,69 +55,113 @@
               <td>{{ aluno.email }}</td>
               <td>{{ aluno.ativo ? 'Ativa' : 'Desativada' }}</td>
               <td>
-                <button class="btn btn-primary btn-sm" @click="editAluno(index)">Editar</button>
-                <button class="btn btn-danger btn-sm" @click="confirmDelete(index)">
+                <button
+                  class="btn btn-primary btn-sm"
+                  @click="editAluno(index)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="btn btn-danger btn-sm"
+                  @click="confirmDelete(index)"
+                >
                   {{ aluno.ativo ? 'Desativar' : 'Reativar' }}
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-      </section>
-      <button class="btn btn-success" @click="showAddModal">Adicionar</button>
-    </main>
+        <button class="btn btn-success" @click="showAddModal">Adicionar</button>
+      </div>
 
-    <!-- Modal de Adicionar -->
-    <div v-if="showModal" class="modal fade show" style="display: block;" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="modalTitle" class="modal-title">{{ isEditing ? 'Editar' : 'Adicionar' }}</h5>
-            <button type="button" class="close" @click="closeModal" aria-label="Fechar">
-              <span aria-hidden="true">&times;</span>
-            </button>
+      <!-- Modal de Adicionar -->
+      <div v-if="showModal" class="modal fade show" style="display: block">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                {{ isEditing ? 'Editar' : 'Adicionar' }}
+              </h5>
+              <!-- Ícone de "X" para fechar o modal -->
+              <button
+                type="button"
+                class="close"
+                @click="closeModal"
+                aria-label="Fechar"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form @submit.prevent="isEditing ? updateAluno() : addAluno()">
+                <div class="form-group">
+                  <label for="studentName">Nome</label>
+                  <input
+                    type="text"
+                    v-model="form.nome"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="studentCPF">CPF</label>
+                  <input
+                    type="text"
+                    v-model="form.cpf"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="studentRA">RA</label>
+                  <input
+                    type="text"
+                    v-model="form.ra"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="studentEmail">Email</label>
+                  <input
+                    type="email"
+                    v-model="form.email"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  {{ isEditing ? 'Salvar' : 'Adicionar' }}
+                </button>
+              </form>
+            </div>
           </div>
-          <div class="modal-body">
-            <form @submit.prevent="isEditing ? updateAluno() : addAluno()">
-              <div class="form-group">
-                <label for="studentName">Nome</label>
-                <input type="text" v-model="form.nome" id="studentName" class="form-control" required aria-required="true" />
-              </div>
-              <div class="form-group">
-                <label for="studentCPF">CPF</label>
-                <input type="text" v-model="form.cpf" id="studentCPF" class="form-control" required aria-required="true" />
-              </div>
-              <div class="form-group">
-                <label for="studentRA">RA</label>
-                <input type="text" v-model="form.ra" id="studentRA" class="form-control" required aria-required="true" />
-              </div>
-              <div class="form-group">
-                <label for="studentEmail">Email</label>
-                <input type="email" v-model="form.email" id="studentEmail" class="form-control" required aria-required="true" />
-              </div>
-              <button type="submit" class="btn btn-primary">{{ isEditing ? 'Salvar' : 'Adicionar' }}</button>
-            </form>
+        </div>
+      </div>
+
+      <!-- Modal de Sucesso -->
+      <div v-if="successMessage" class="modal fade show" style="display: block">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Sucesso</h5>
+              <!-- Ícone de "X" para fechar o modal -->
+              <button
+                type="button"
+                class="close"
+                @click="successMessage = ''"
+                aria-label="Fechar"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">{{ successMessage }}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal de Sucesso -->
-    <div v-if="successMessage" class="modal fade show" style="display: block;" role="alert" aria-live="assertive">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            <p>{{ successMessage }}</p>
-            <button type="button" class="btn btn-secondary" @click="successMessage = ''">Fechar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="/src/app.js"></script> <!-- O arquivo JavaScript -->
-</body>
+    <!-- Adicionando o arquivo script.js -->
+    <script src="/src/app.js"></script>
+  </body>
 </html>

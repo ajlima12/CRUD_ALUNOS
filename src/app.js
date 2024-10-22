@@ -23,6 +23,7 @@ createApp({
       isEditing: false,
       editIndex: null,
       successMessage: '',
+      accessibilityMenuVisible: false,
     };
   },
   methods: {
@@ -65,5 +66,9 @@ createApp({
     resetForm() {
       this.form = { nome: '', cpf: '', ra: '', email: '' };
     },
+    toggleAccessibilityMenu() {
+      this.accessibilityMenuVisible = !this.accessibilityMenuVisible;
+    },
+
   },
 }).mount('#app');
